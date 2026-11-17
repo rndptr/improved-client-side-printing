@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driverless WebUSB Printer</title>
+  <script type="module" crossorigin src="/assets/index-BB269AqM.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CW81UI0d.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      <h1>PrintFlow</h1>
+    </div>
+    <div class="controls">
+      <button id="connect-btn" class="primary-btn" style="margin-top: 0; padding: 0.5rem 1rem;">Connect Printer</button>
+      <div class="toggle-switch">
+        <input type="checkbox" id="color-toggle" checked>
+        <label for="color-toggle">
+          <span class="color-text">Color</span>
+          <span class="bw-text">B&W</span>
+        </label>
+      </div>
+      <button id="info-btn" class="icon-btn" aria-label="Information">ℹ️</button>
+    </div>
+  </nav>
+
+  <!-- Session Banner (Hidden by default) -->
+  <div id="session-banner" class="session-banner hidden">
+    <span id="printer-model-text">Connected to [Printer]</span>
+    <button id="release-btn" class="release-btn">Release Printer</button>
+  </div>
+
+  <!-- Main Application Area -->
+  <main class="main-container">
+    <div id="dropzone" class="dropzone">
+      <div class="drop-content">
+        <div class="upload-icon">📄</div>
+        <h2>Drag & Drop to Print</h2>
+        <p>Supports PDF, PNG, JPEG, WebP</p>
+        <input type="file" id="file-input" multiple accept="application/pdf, image/png, image/jpeg, image/webp" hidden>
+        <button id="browse-btn" class="browse-btn">Browse Files</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Info Modal -->
+  <div id="info-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>How it Works</h2>
+      <p>This service operates entirely within your browser. Documents are rasterized locally and sent directly to your USB printer via the WebUSB API using a WebAssembly engine.</p>
+      <p><strong>Privacy Guarantee:</strong> Your files never leave your device.</p>
+      <button id="close-modal-btn" class="primary-btn">Got it</button>
+    </div>
+  </div>
+
+  <!-- Hidden Canvas for Rasterization -->
+  <canvas id="render-canvas" hidden></canvas>
+
+  <script>
+    // Initialize Emscripten Module config BEFORE gutenprint.js executes
+    window.Module = {
+      locateFile: function(path) {
+        return '/' + path;
+      }
+    };
+  </script>
+  <script src="/gutenprint.js"></script>
+</body>
+</html>
